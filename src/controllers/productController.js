@@ -4,7 +4,9 @@ const { successResponse, errorResponse } = require('../utils/response');
 const productController = {
     index: async (req, res) => {
         try {
-            const product = await productService.findAll();
+            const { search = '' } = req.query;
+            const product = await productService.findAll(search);
+
             return successResponse(res, product, 'Berhasil ambil semua data produk.', 200);
         } catch (error) {
             return errorResponse(res, error.message, 500)

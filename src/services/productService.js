@@ -3,8 +3,14 @@ const config = require('../config/app');
 
 const table = 'products';
 
-const findAll = async () => {
-    return db(table).select('id', 'name', 'price', 'stock', 'created_at', 'updated_at');
+const findAll = async (search = '') => {
+    const query = db(table).select('id', 'name', 'price', 'stock', 'created_at', 'updated_at');
+
+    if (search) {
+        query.whereRaw('LOWER(name) LIKE ?', [`%${search.toLowerCase()}%`]);
+    }
+
+    return query;
 }
 
 const find = async (id) => {
